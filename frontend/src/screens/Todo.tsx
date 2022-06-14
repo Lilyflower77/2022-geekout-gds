@@ -35,7 +35,7 @@ function TodoItem(props: TodoItemProps) {
 
   return (<>
     <tr>
-      <td>{/* insert checkbox here */}</td>
+      <td><input type="checkbox"></input></td>
       <td width={'100%'}>{props.description}</td>
     </tr>
   </>
@@ -55,9 +55,13 @@ function Todo(props: TodoProps) {
     setTodoItems(result.data);
   }, []);
 
+  const[isRefresh, setIsRefresh] = useState(false)
   const onRefreshClicked = useCallback(async () => {
-    console.log('Refresh button clicked');
-    /* refresh todos here */
+    setIsRefresh(true);
+    setTimeout(async () => {
+    await populateTodos();
+    setIsRefresh(false);
+    },400);
   }, [populateTodos]);
 
   useEffect(() => {
@@ -98,7 +102,9 @@ function Todo(props: TodoProps) {
                       <Button isPrimary isLoading={false}>Submit</Button>
                     </Col>
                     <Col>
-                      {/* insert button here */}
+                      <Button type="button" isOutline isLoading={isRefresh} onClick={onRefreshClicked}>
+                        <span className='sgds-icon sgds-icon-refresh' />
+                      </Button>
                     </Col>
                   </Row>
                 </div>
